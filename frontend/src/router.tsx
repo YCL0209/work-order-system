@@ -1,8 +1,13 @@
-import { createBrowserRouter } from 'react-router-dom';
-import AppLayout from './components/layout/AppLayout';
-import Contacts from './pages/Contacts';
-import WorkOrderManagement from './pages/WorkOrderManagement';
-import WorkOrderQuery from './pages/WorkOrderQuery';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { AppLayout } from '@/components/layout/AppLayout';
+import Dashboard from '@/pages/Dashboard';
+import OrderFlow from '@/pages/OrderFlow';
+import Orders from '@/pages/Orders';
+import Customers from '@/pages/Customers';
+import Consumables from '@/pages/Consumables';
+import Finance from '@/pages/Finance';
+import AccountManagement from '@/pages/AccountManagement';
+import ICInventory from '@/pages/ICInventory';
 
 export const router = createBrowserRouter([
   {
@@ -11,15 +16,51 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <WorkOrderManagement />,
+        element: <Navigate to="/dashboard" replace />,
       },
       {
-        path: 'contacts',
-        element: <Contacts />,
+        path: 'dashboard',
+        element: <Dashboard />,
       },
       {
-        path: 'work-orders',
-        element: <WorkOrderQuery />,
+        path: 'order-flow',
+        element: <OrderFlow />,
+      },
+      {
+        path: 'orders',
+        element: <Orders />,
+      },
+      {
+        path: 'customers',
+        element: <Customers />,
+      },
+      {
+        path: 'consumables',
+        element: <Navigate to="/consumables/tapes" replace />,
+      },
+      {
+        path: 'consumables/tapes',
+        element: <Consumables />,
+      },
+      {
+        path: 'consumables/sockets',
+        element: <Consumables />,
+      },
+      {
+        path: 'consumables/others',
+        element: <Consumables />,
+      },
+      {
+        path: 'finance',
+        element: <Finance />,
+      },
+      {
+        path: 'accounts',
+        element: <AccountManagement />,
+      },
+      {
+        path: 'ic-inventory',
+        element: <ICInventory />,
       },
     ],
   },

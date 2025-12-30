@@ -1,24 +1,18 @@
-import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
+import { Sidebar } from './Sidebar';
 
-const { Content } = Layout;
-
-export default function AppLayout() {
+export function AppLayout() {
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <div className="min-h-screen bg-bg-light">
+      {/* 側邊欄 */}
       <Sidebar />
-      <Layout style={{ marginLeft: 240 }}>
-        <Content
-          style={{
-            padding: 24,
-            background: '#f8fafc',
-            minHeight: '100vh',
-          }}
-        >
+
+      {/* 主內容區 */}
+      <main className="ml-sidebar min-h-screen">
+        <div className="p-6">
           <Outlet />
-        </Content>
-      </Layout>
-    </Layout>
+        </div>
+      </main>
+    </div>
   );
 }

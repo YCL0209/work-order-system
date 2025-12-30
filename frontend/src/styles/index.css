@@ -1,0 +1,497 @@
+@import "tailwindcss";
+
+/*
+ * =====================================================================
+ * IC 燒錄 MES 系統 - UI 樣式規範
+ * =====================================================================
+ *
+ * 【字體大小】Tailwind Classes
+ * ---------------------------------------------------------------------
+ * 頁面標題     text-2xl      24px
+ * 區塊標題     text-xl       20px
+ * 內文/導航    text-base     16px (基準)
+ * 提示/標籤    text-sm       14px
+ * 徽章/小字    text-xs       12px (僅限徽章或圓圈內數字)
+ *
+ * 【品牌色彩】
+ * ---------------------------------------------------------------------
+ * 主色 Primary    bg-primary / text-primary           #4073c2
+ * 主色深          bg-primary-dark / text-primary-dark #2c5282
+ * 主色淺          bg-primary-light                    #e8f0fa
+ * 青綠 Teal       bg-teal / text-teal                 #14b5af
+ * 青綠深          bg-teal-dark                        #0e9b95
+ *
+ * 【功能色彩】
+ * ---------------------------------------------------------------------
+ * 成功 Success    bg-success / text-success           #28a745
+ * 警告 Warning    bg-warning / text-warning           #ffc107
+ * 危險 Danger     bg-danger / text-danger             #dc3545
+ * 資訊 Info       bg-info / text-info                 #17a2b8
+ * 次要 Secondary  bg-secondary / text-secondary       #6c757d
+ *
+ * 【版面配置】
+ * ---------------------------------------------------------------------
+ * 側邊欄寬度      w-sidebar / ml-sidebar              250px
+ * 頁面內距        p-6                                 24px
+ * 側邊欄內距      p-5                                 20px
+ * 網格間距        gap-4                               16px
+ * 卡片間距        gap-6                               24px
+ *
+ * 【圓角】
+ * ---------------------------------------------------------------------
+ * 按鈕            rounded / rounded-btn               4px
+ * 卡片            rounded-card                        6px
+ * 彈窗            rounded-modal                       8px
+ *
+ * 【按鈕樣式】
+ * ---------------------------------------------------------------------
+ * 主要按鈕        btn btn-primary
+ * 成功按鈕        btn btn-success
+ * 警告按鈕        btn btn-warning
+ * 危險按鈕        btn btn-danger
+ * 青綠按鈕        btn btn-teal
+ * 外框按鈕        btn btn-outline-primary
+ * 小型按鈕        btn btn-sm
+ * 迷你按鈕        btn btn-mini
+ *
+ * 【狀態徽章】
+ * ---------------------------------------------------------------------
+ * 待處理          badge badge-pending      灰底灰字
+ * 進行中          badge badge-active       藍底白字
+ * 已完成          badge badge-completed    綠底白字
+ *
+ * 【表單】
+ * ---------------------------------------------------------------------
+ * 輸入框          form-input
+ * 標籤            form-label
+ * 錯誤狀態        form-input error
+ *
+ * =====================================================================
+ */
+
+/* CSS 變數 */
+:root {
+  /* 品牌色 */
+  --color-primary: #4073c2;
+  --color-primary-dark: #2c5282;
+  --color-primary-border: #2d4a7c;
+  --color-primary-light: #e8f0fa;
+  --color-teal: #14b5af;
+  --color-teal-dark: #0e9b95;
+  --color-teal-light: #e6f7f6;
+
+  /* 功能色 */
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-danger: #dc3545;
+  --color-info: #17a2b8;
+  --color-secondary: #6c757d;
+
+  /* 文字色 */
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-text-hint: #94a3b8;
+
+  /* 邊框與背景 */
+  --color-border-light: #e2e8f0;
+  --color-border-medium: #cbd5e0;
+  --color-bg-light: #f8f9fa;
+  --color-bg-section: #f7fafc;
+  --color-bg-sidebar: #f5fcff;
+
+  /* 字體 */
+  --font-size-base: 14px;
+  --font-size-btn: 15px;
+  --font-size-btn-sm: 12px;
+  --font-size-btn-mini: 11px;
+  --font-size-card: 18px;
+  --font-size-title: 24px;
+  --font-size-hint: 12px;
+  --font-size-badge: 13px;
+  --font-size-amount: 16px;
+
+  /* 間距 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+
+  /* 圓角 */
+  --radius-btn: 4px;
+  --radius-card: 6px;
+  --radius-modal: 8px;
+  --radius-container: 12px;
+
+  /* 側邊欄 */
+  --sidebar-width: 250px;
+}
+
+/* Tailwind v4 自訂主題 */
+@theme {
+  --color-primary: #4073c2;
+  --color-primary-dark: #2c5282;
+  --color-primary-border: #2d4a7c;
+  --color-primary-light: #e8f0fa;
+  --color-teal: #14b5af;
+  --color-teal-dark: #0e9b95;
+  --color-teal-light: #e6f7f6;
+  --color-success: #28a745;
+  --color-success-light: #d1fae5;
+  --color-success-dark: #065f46;
+  --color-warning: #ffc107;
+  --color-warning-light: #fef3c7;
+  --color-warning-dark: #d97706;
+  --color-danger: #dc3545;
+  --color-danger-light: #fee2e2;
+  --color-danger-dark: #c53030;
+  --color-info: #17a2b8;
+  --color-info-light: #e0f2fe;
+  --color-info-dark: #0369a1;
+  --color-secondary: #6c757d;
+  --color-secondary-light: #f3f4f6;
+  --color-secondary-dark: #4b5563;
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-text-hint: #94a3b8;
+  --color-border-light: #e2e8f0;
+  --color-border-medium: #cbd5e0;
+  --color-bg-light: #f8f9fa;
+  --color-bg-section: #f7fafc;
+  --color-bg-sidebar: #f5fcff;
+
+  --width-sidebar: 250px;
+
+  --font-size-base: 14px;
+  --font-size-btn: 15px;
+  --font-size-btn-sm: 12px;
+  --font-size-btn-mini: 11px;
+  --font-size-card: 18px;
+  --font-size-title: 24px;
+  --font-size-hint: 12px;
+  --font-size-badge: 13px;
+
+  --radius-btn: 4px;
+  --radius-card: 6px;
+  --radius-modal: 8px;
+}
+
+/* 側邊欄 Utility Classes */
+.w-sidebar {
+  width: var(--sidebar-width);
+}
+
+.ml-sidebar {
+  margin-left: var(--sidebar-width);
+}
+
+/* 基礎樣式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-light);
+  line-height: 1.5;
+}
+
+/* 按鈕基礎 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--radius-btn);
+  font-weight: 600;
+  font-size: var(--font-size-btn);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  border: 1px solid var(--color-primary-border);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.btn-success {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+  color: #212529;
+  border: 1px solid #e0a800;
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.btn-info {
+  background-color: var(--color-info);
+  color: white;
+}
+
+.btn-teal {
+  background: linear-gradient(135deg, #14b5af 0%, #0e9b95 100%);
+  color: white;
+  border: 1px solid #0e9b95;
+}
+
+.btn-sm {
+  padding: 8px 12px;
+  font-size: var(--font-size-btn-sm);
+}
+
+.btn-mini {
+  padding: 4px 8px;
+  font-size: var(--font-size-btn-mini);
+  height: 28px;
+}
+
+/* 外框按鈕 */
+.btn-outline-primary {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-outline-secondary {
+  background-color: transparent;
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.btn-outline-danger {
+  background-color: transparent;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+
+.btn-outline-danger:hover {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+/* 卡片 */
+.card {
+  background-color: white;
+  border-radius: var(--radius-card);
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  border-bottom: 1px solid var(--color-border-light);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+/* 狀態徽章 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.badge-pending {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.badge-active {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.badge-completed {
+  background-color: var(--color-success);
+  color: white;
+}
+
+/* NG 原因徽章 */
+.badge-burn-fail {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge-checksum-err {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+
+.badge-pin-damage {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.badge-empty-burn {
+  background-color: #f3e8ff;
+  color: #7c3aed;
+}
+
+.badge-timeout {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge-other {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+/* 付款狀態徽章 */
+.badge-payment-pending {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.badge-payment-invoiced {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge-payment-paid {
+  background-color: #d1fae5;
+  color: #047857;
+}
+
+.badge-payment-overdue {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/* 勾稽狀態 */
+.reconciled {
+  border: 2px solid #4ade80;
+  background-color: #f0fdf4;
+}
+
+.unreconciled {
+  border: 2px solid #f87171;
+  background-color: #fef2f2;
+}
+
+/* 狀態指示器 */
+.status-normal {
+  background-color: #d1fae5;
+  color: #047857;
+}
+
+.status-warning {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+
+.status-critical {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/* 表單輸入 */
+.form-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-btn);
+  font-size: var(--font-size-base);
+  background-color: white;
+  color: var(--color-text-primary);
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(64, 115, 194, 0.1);
+}
+
+.form-input.error {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #495057;
+  font-size: var(--font-size-base);
+}
+
+/* 表格 */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.data-table th {
+  background-color: var(--color-bg-section);
+  border-bottom: 2px solid var(--color-border-light);
+  padding: 12px;
+  color: #4a5568;
+  font-weight: 600;
+  text-align: left;
+}
+
+.data-table td {
+  border-bottom: 1px solid var(--color-border-light);
+  padding: 12px;
+  color: var(--color-text-primary);
+}
+
+.data-table tr:hover {
+  background-color: var(--color-bg-section);
+}

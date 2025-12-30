@@ -1,0 +1,55 @@
+import type { Account } from '@/types/account';
+
+// 模擬帳號資料
+export const mockAccounts: Account[] = [
+  {
+    id: 'ACC-001',
+    username: 'admin',
+    displayName: '管理者',
+    role: 'admin',
+    permissions: ['dashboard', 'order-flow', 'orders', 'customers', 'consumables', 'finance', 'accounts'],
+    isActive: true,
+    createdAt: '2024-01-01T00:00:00Z',
+    lastLogin: '2024-12-24T08:30:00Z',
+  },
+  {
+    id: 'ACC-002',
+    username: 'senior_assistant',
+    displayName: '資深助理',
+    role: 'assistant',
+    permissions: ['order-flow', 'orders', 'customers', 'consumables', 'finance'],
+    isActive: true,
+    createdAt: '2024-03-15T00:00:00Z',
+    lastLogin: '2024-12-24T09:00:00Z',
+  },
+  {
+    id: 'ACC-003',
+    username: 'warehouse',
+    displayName: '倉管助理',
+    role: 'assistant',
+    permissions: ['order-flow', 'consumables'],
+    isActive: true,
+    createdAt: '2024-06-01T00:00:00Z',
+    lastLogin: '2024-12-23T17:00:00Z',
+  },
+  {
+    id: 'ACC-004',
+    username: 'newbie',
+    displayName: '新進人員',
+    role: 'assistant',
+    permissions: ['order-flow'],
+    isActive: true,
+    createdAt: '2024-12-01T00:00:00Z',
+    lastLogin: null,
+  },
+  {
+    id: 'ACC-005',
+    username: 'resigned',
+    displayName: '已離職員工',
+    role: 'assistant',
+    permissions: [],
+    isActive: false,
+    createdAt: '2024-02-01T00:00:00Z',
+    lastLogin: '2024-10-15T12:00:00Z',
+  },
+];
