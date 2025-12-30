@@ -316,8 +316,24 @@ export default function ExamplePage() {
 
 ---
 
+## 11. 已統一的頁面
+
+以下頁面已遵循本規範：
+
+| 頁面 | 路徑 | 說明 |
+|-----|------|------|
+| 儀表板 | `/dashboard` | Dashboard |
+| 訂單管理 | `/orders` | Orders |
+| 客戶管理 | `/customers` | Customers |
+| 金流管理 | `/finance` | Finance |
+| 帳號管理 | `/account` | AccountManagement |
+| IC 庫存管理 | `/ic-inventory` | ICInventory |
+
+---
+
 ## 版本紀錄
 
 | 版本 | 日期 | 說明 |
 |-----|------|------|
+| 1.1 | 2024-12-30 | 新增 ICInventory 頁面，補充已統一頁面清單 |
 | 1.0 | 2024-12-30 | 初版建立 |

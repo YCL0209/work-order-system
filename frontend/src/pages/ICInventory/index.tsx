@@ -49,22 +49,22 @@ export default function ICInventoryPage() {
 
       {/* 統計卡片 */}
       <div className="grid grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <p className="text-sm text-gray-500">總筆數</p>
-          <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
-        </div>
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <p className="text-sm text-gray-500">總數量</p>
-          <p className="text-2xl font-bold text-primary">{stats.totalQty.toLocaleString()}</p>
-        </div>
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <p className="text-sm text-gray-500">待加工</p>
-          <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
-        </div>
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <p className="text-sm text-gray-500">加工中</p>
-          <p className="text-2xl font-bold text-blue-600">{stats.processing}</p>
-        </div>
+        <Card className="text-center">
+          <div className="text-sm text-gray-500">總筆數</div>
+          <div className="text-2xl font-bold text-gray-800 mt-1">{stats.total}</div>
+        </Card>
+        <Card className="text-center">
+          <div className="text-sm text-gray-500">總數量</div>
+          <div className="text-2xl font-bold text-primary mt-1">{stats.totalQty.toLocaleString()}</div>
+        </Card>
+        <Card className="text-center">
+          <div className="text-sm text-gray-500">待加工</div>
+          <div className="text-2xl font-bold text-yellow-600 mt-1">{stats.pending}</div>
+        </Card>
+        <Card className="text-center">
+          <div className="text-sm text-gray-500">加工中</div>
+          <div className="text-2xl font-bold text-blue-600 mt-1">{stats.processing}</div>
+        </Card>
       </div>
 
       {/* 搜尋和篩選 */}
@@ -97,58 +97,50 @@ export default function ICInventoryPage() {
 
       {/* 資料表格 */}
       <Card>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-semibold text-gray-600">IC 料號</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-600">數量</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-600">客戶名稱</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-600">寄放日期</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-600">批號</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-600">儲位</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-600">狀態</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-600">備註</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-600">操作</th>
+        <table className="data-table w-full">
+          <thead>
+            <tr>
+              <th>IC 料號</th>
+              <th>數量</th>
+              <th>客戶名稱</th>
+              <th>寄放日期</th>
+              <th>批號</th>
+              <th>儲位</th>
+              <th>狀態</th>
+              <th>備註</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.length === 0 ? (
+              <tr>
+                <td colSpan={9} className="text-center py-8 text-gray-500">
+                  沒有符合條件的資料
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredData.map((item) => (
-                <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4">
-                    <span className="font-mono font-medium">{item.partNumber}</span>
-                  </td>
-                  <td className="py-3 px-4">
-                    <span className="font-semibold">{item.quantity.toLocaleString()}</span>
-                  </td>
-                  <td className="py-3 px-4">{item.customerName}</td>
-                  <td className="py-3 px-4">{item.depositDate}</td>
-                  <td className="py-3 px-4">
-                    <span className="font-mono text-sm">{item.batchNo}</span>
-                  </td>
-                  <td className="py-3 px-4">
+            ) : (
+              filteredData.map((item) => (
+                <tr key={item.id}>
+                  <td className="font-mono font-medium">{item.partNumber}</td>
+                  <td className="font-semibold">{item.quantity.toLocaleString()}</td>
+                  <td>{item.customerName}</td>
+                  <td>{item.depositDate}</td>
+                  <td className="font-mono text-sm">{item.batchNo}</td>
+                  <td>
                     <span className="bg-gray-100 px-2 py-1 rounded text-sm">{item.location}</span>
                   </td>
-                  <td className="py-3 px-4">{getStatusBadge(item.status)}</td>
-                  <td className="py-3 px-4">
-                    <span className="text-gray-500 text-sm">{item.remark || '-'}</span>
-                  </td>
-                  <td className="py-3 px-4">
-                    <button className="text-primary hover:text-primary-dark text-sm font-medium">
+                  <td>{getStatusBadge(item.status)}</td>
+                  <td className="text-gray-500 text-sm">{item.remark || '-'}</td>
+                  <td>
+                    <Button variant="outline-primary" size="mini">
                       編輯
-                    </button>
+                    </Button>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {filteredData.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              沒有符合條件的資料
-            </div>
-          )}
-        </div>
+              ))
+            )}
+          </tbody>
+        </table>
       </Card>
     </div>
   );
