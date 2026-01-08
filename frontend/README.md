@@ -1,73 +1,49 @@
-# React + TypeScript + Vite
+# IC 燒錄 MES 流程管控系統 - 前端 Demo v0.1
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **版本狀態：待客戶確認**
+> 此為前端展示版本，用於確認 UI/UX 及功能流程。
+> 後續可能依客戶需求進行多次修改迭代。
 
-Currently, two official plugins are available:
+## 功能頁面
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| 頁面 | 路徑 | 說明 |
+|------|------|------|
+| 儀表板 | `/` | 系統總覽 |
+| 訂單管理 | `/orders` | 訂單列表與狀態管理 |
+| 訂單流程 | `/order-flow` | 燒錄流程步驟操作 |
+| IC 庫存管理 | `/ic-inventory` | 客戶寄放 IC 管理 |
+| 耗材管控 | `/consumables` | 料帶、燒錄座管理 |
+| 往來客戶 | `/customers` | 客戶資料管理 |
+| 財務請款 | `/finance` | 請款單與收款管理 |
+| 帳號管理 | `/accounts` | 使用者權限設定 |
+| 登入預覽 | `/login-preview` | 登入頁面樣式預覽 |
 
-## React Compiler
+## 技術架構
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **框架**: React 18 + TypeScript
+- **建置工具**: Vite
+- **樣式**: Tailwind CSS v4
+- **路由**: React Router v6
 
-## Expanding the ESLint configuration
+## 開發指令
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# 安裝依賴
+npm install
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# 啟動開發伺服器
+npm run dev
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 建置生產版本
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 版本紀錄
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| 版本 | 日期 | 說明 |
+|------|------|------|
+| v0.1 | 2025-01-08 | 初版 Demo，待客戶確認 |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+穗鈅科技 © 2025

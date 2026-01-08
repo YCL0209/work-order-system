@@ -15,15 +15,14 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="space-y-6">
+    <div>
       {/* 頁面標題 */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-800">儀表板</h1>
-        <p className="text-gray-500 mt-1">IC 燒錄 MES 流程管控系統總覽</p>
+      <div className="page-header">
+        <h1 className="text-2xl font-bold text-gray-800">系統總覽</h1>
       </div>
 
       {/* 統計卡片 */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 gap-6 mt-8" style={{ marginBottom: '32px' }}>
         <Card className="text-center">
           <div className="text-3xl font-bold text-primary">{stats.totalOrders}</div>
           <div className="text-sm text-gray-500 mt-1">總訂單數</div>
@@ -42,7 +41,7 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-8 mt-6">
         {/* 近期訂單 */}
         <Card title="近期訂單" extra={<Link to="/orders" className="text-primary text-sm">查看全部</Link>}>
           <div className="space-y-3">
@@ -125,39 +124,6 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      {/* 快速連結 */}
-      <Card title="快速連結">
-        <div className="grid grid-cols-4 gap-4">
-          <Link
-            to="/order-flow"
-            className="flex flex-col items-center p-4 bg-primary-light rounded-card hover:shadow-md transition-shadow"
-          >
-            <span className="text-2xl mb-2">📋</span>
-            <span className="font-medium text-primary-dark">流程進度</span>
-          </Link>
-          <Link
-            to="/consumables"
-            className="flex flex-col items-center p-4 bg-teal-light rounded-card hover:shadow-md transition-shadow"
-          >
-            <span className="text-2xl mb-2">🔧</span>
-            <span className="font-medium text-teal-dark">耗材管控</span>
-          </Link>
-          <Link
-            to="/customers"
-            className="flex flex-col items-center p-4 bg-green-50 rounded-card hover:shadow-md transition-shadow"
-          >
-            <span className="text-2xl mb-2">👥</span>
-            <span className="font-medium text-green-700">客戶管理</span>
-          </Link>
-          <Link
-            to="/finance"
-            className="flex flex-col items-center p-4 bg-orange-50 rounded-card hover:shadow-md transition-shadow"
-          >
-            <span className="text-2xl mb-2">💰</span>
-            <span className="font-medium text-orange-700">金流管理</span>
-          </Link>
-        </div>
-      </Card>
     </div>
   );
 }

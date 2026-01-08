@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登入 - 訂單管理系統</title>
+  <link rel="stylesheet" href="login-template.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="login-container">
+    <!-- 背景裝飾 -->
+    <div class="background-decoration">
+      <div class="decoration-circle circle-1"></div>
+      <div class="decoration-circle circle-2"></div>
+      <div class="decoration-circle circle-3"></div>
+    </div>
+
+    <!-- 登入表單容器 -->
+    <div class="login-form-container">
+      <!-- 公司Logo和標題 -->
+      <div class="login-header">
+        <div class="logo-container">
+          <img src="images/suiyao-logo.png" alt="SUIYAO Logo" class="logo">
+        </div>
+        <h1 class="login-title">訂單管理系統</h1>
+        <p class="login-subtitle">請輸入您的登入資訊</p>
+      </div>
+
+      <!-- 登入表單 -->
+      <form id="loginForm" class="login-form">
+        <!-- 統編輸入框 -->
+        <div class="form-group">
+          <label for="taxId" class="form-label">
+            <i class="fas fa-building"></i>
+            帳號 (公司統編)
+          </label>
+          <input 
+            type="text" 
+            id="taxId" 
+            name="taxId" 
+            class="form-input" 
+            placeholder="請輸入8位數統編"
+            maxlength="8"
+            pattern="[0-9]{8}"
+            required
+            autocomplete="organization"
+          >
+          <div class="form-error" id="taxIdError"></div>
+        </div>
+
+        <!-- 信箱輸入框 -->
+        <div class="form-group">
+          <label for="email" class="form-label">
+            <i class="fas fa-envelope"></i>
+            電子信箱
+          </label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="form-input" 
+            placeholder="請輸入電子信箱"
+            required
+            autocomplete="email"
+          >
+          <div class="form-error" id="emailError"></div>
+        </div>
+
+        <!-- 密碼輸入框 -->
+        <div class="form-group">
+          <label for="password" class="form-label">
+            <i class="fas fa-lock"></i>
+            密碼
+          </label>
+          <div class="password-input-container">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="form-input" 
+              placeholder="請輸入密碼"
+              required
+              autocomplete="current-password"
+            >
+            <button type="button" class="password-toggle" id="passwordToggle">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div class="form-error" id="passwordError"></div>
+        </div>
+
+
+        <!-- 登入錯誤訊息 -->
+        <div id="loginError" class="login-error" style="display: none;"></div>
+
+        <!-- 登入按鈕 -->
+        <button type="submit" class="login-button" id="loginButton">
+          <span class="button-text">登入</span>
+          <div class="loading-spinner" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+        </button>
+      </form>
+
+      <!-- 頁腳資訊 -->
+      <div class="login-footer">
+        <p class="footer-text">
+          © 2025 SUIYAO 訂單管理系統
+        </p>
+        <p class="footer-version">
+          版本 8.0.0
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript (加上版本號防止快取) -->
+  <script type="module" src="js/compiled/config/apiConfig.js?v=1.0.0"></script>
+  <script src="js/compiled/config/authConfig.js?v=1.0.0"></script>
+  <script src="js/compiled/services/DataAccessLayer.js?v=3.2.0"></script>
+  <script src="js/compiled/frontend/services/AuthService.js?v=1757392496"></script>
+  <script>
+    // 簡化腳本載入檢查 - 減少複雜性
+    window.addEventListener('load', function() {
+      // 檢查關鍵服務是否載入
+      const servicesLoaded = typeof window.AuthService !== 'undefined' && typeof window.apiConfig !== 'undefined';
+      
+      if (!servicesLoaded) {
+        console.warn('⚠️ 關鍵服務未完全載入，可能影響登入功能');
+        // 顯示用戶友好的錯誤信息
+        const loginError = document.getElementById('loginError');
+        if (loginError) {
+          loginError.textContent = '正在載入服務，請稍候...';
+          loginError.style.display = 'block';
+          
+          // 3秒後隱藏錯誤信息，允許用戶嘗試登入
+          setTimeout(() => {
+            loginError.style.display = 'none';
+          }, 3000);
+        }
+      }
+    });
+  </script>
+  <script>
+    // 登入頁面初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('loginForm');
+      const taxIdInput = document.getElementById('taxId');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const passwordToggle = document.getElementById('passwordToggle');
+      const loginButton = document.getElementById('loginButton');
+      const loginError = document.getElementById('loginError');
+
+      // 檢查是否已登入 - 簡化檢查邏輯
+      if (typeof window.AuthService !== 'undefined') {
+        const authService = window.AuthService.getInstance();
+        
+        // 統一的認證狀態檢查，避免競態條件
+        const checkAuthAndRedirect = () => {
+          const isAuthenticated = authService.isAuthenticated();
+          
+          if (isAuthenticated) {
+            console.log('✅ 檢測到已認證用戶，重導向到主頁面');
+            window.location.href = '/';
+            return true;
+          }
+          return false;
+        };
+        
+        // 立即檢查
+        if (checkAuthAndRedirect()) return;
+        
+        // 如果立即檢查未成功，給 AuthService 少量時間載入 sessionStorage 資料
+        setTimeout(() => {
+          checkAuthAndRedirect();
+        }, 100);
+      }
+
+      // 統編輸入格式化
+      taxIdInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        if (value.length > 8) {
+          value = value.slice(0, 8);
+        }
+        e.target.value = value;
+        clearFieldError('taxId');
+      });
+
+      // 信箱輸入驗證
+      emailInput.addEventListener('input', function() {
+        clearFieldError('email');
+      });
+
+      // 密碼輸入驗證
+      passwordInput.addEventListener('input', function() {
+        clearFieldError('password');
+      });
+
+      // 密碼顯示/隱藏切換
+      passwordToggle.addEventListener('click', function() {
+        const type = passwordInput.type === 'password' ? 'text' : 'password';
+        passwordInput.type = type;
+        
+        const icon = this.querySelector('i');
+        if (type === 'text') {
+          icon.className = 'fas fa-eye-slash';
+        } else {
+          icon.className = 'fas fa-eye';
+        }
+      });
+
+      // 表單提交處理
+      loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+          return;
+        }
+
+        setLoading(true);
+        hideLoginError();
+
+        const formData = {
+          taxId: taxIdInput.value.trim(),
+          email: emailInput.value.trim(),
+          password: passwordInput.value
+        };
+
+        try {
+          // 等待 AuthService 載入完成
+          let authService;
+          if (typeof window.AuthService === 'undefined') {
+            // 嘗試等待載入
+            let retryCount = 0;
+            const maxRetries = 10;
+            
+            while (typeof window.AuthService === 'undefined' && retryCount < maxRetries) {
+              await new Promise(resolve => setTimeout(resolve, 100));
+              retryCount++;
+            }
+            
+            if (typeof window.AuthService === 'undefined') {
+              throw new Error('認證服務載入失敗，請重新整理頁面 (Ctrl+Shift+R)');
+            }
+          }
+
+          console.log('🔐 開始登入流程');
+          authService = window.AuthService.getInstance();
+          
+          // 等待 DataAccessLayer 初始化完成
+          await authService.ensureDataAccessLayer();
+          
+          const result = await authService.login(formData);
+
+          if (result && result.success) {
+            console.log('✅ 登入成功，準備跳轉');
+            
+
+            // 檢查認證資料是否完整保存
+            const hasRequiredData = authService.isAuthenticated() && 
+                                   authService.getToken() && 
+                                   authService.getCurrentUser() && 
+                                   authService.getCurrentTenant();
+
+            if (hasRequiredData) {
+              // 登入成功，觸發快取預熱（不等待完成）
+              setTimeout(() => {
+                if (window.dataAccessLayer && window.dataAccessLayer.warmupCache) {
+                  window.dataAccessLayer.warmupCache().catch(() => {
+                    // 忽略預熱錯誤，不影響正常使用
+                  });
+                }
+              }, 800);
+              
+              // 快速跳轉，提升用戶體驗
+              setTimeout(() => {
+                window.location.href = '/';
+              }, 500);
+            } else {
+              showLoginError('登入狀態保存失敗，請重試');
+            }
+          } else {
+            showLoginError(result?.message || '登入失敗，請檢查您的資訊');
+          }
+        } catch (error) {
+          console.error('登入錯誤:', error);
+          showLoginError(error.message || '登入失敗，請稍後再試');
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      // 表單驗證
+      function validateForm() {
+        let isValid = true;
+
+        // 驗證統編
+        const taxId = taxIdInput.value.trim();
+        if (!taxId) {
+          showFieldError('taxId', '請輸入公司統編');
+          isValid = false;
+        } else if (!/^[0-9]{8}$/.test(taxId)) {
+          showFieldError('taxId', '統編格式不正確，請輸入8位數字');
+          isValid = false;
+        }
+
+        // 驗證信箱
+        const email = emailInput.value.trim();
+        if (!email) {
+          showFieldError('email', '請輸入電子信箱');
+          isValid = false;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showFieldError('email', '信箱格式不正確');
+          isValid = false;
+        }
+
+        // 驗證密碼
+        const password = passwordInput.value;
+        if (!password) {
+          showFieldError('password', '請輸入密碼');
+          isValid = false;
+        } else if (password.length < 6) {
+          showFieldError('password', '密碼至少需要6個字元');
+          isValid = false;
+        }
+
+        return isValid;
+      }
+
+      // 顯示欄位錯誤
+      function showFieldError(fieldName, message) {
+        const errorElement = document.getElementById(fieldName + 'Error');
+        const inputElement = document.getElementById(fieldName);
+        
+        if (errorElement) {
+          errorElement.textContent = message;
+          errorElement.style.display = 'block';
+        }
+        
+        if (inputElement) {
+          inputElement.classList.add('error');
+        }
+      }
+
+      // 清除欄位錯誤
+      function clearFieldError(fieldName) {
+        const errorElement = document.getElementById(fieldName + 'Error');
+        const inputElement = document.getElementById(fieldName);
+        
+        if (errorElement) {
+          errorElement.style.display = 'none';
+        }
+        
+        if (inputElement) {
+          inputElement.classList.remove('error');
+        }
+      }
+
+      // 顯示登入錯誤
+      function showLoginError(message) {
+        loginError.textContent = message;
+        loginError.style.display = 'block';
+      }
+
+      // 隱藏登入錯誤
+      function hideLoginError() {
+        loginError.style.display = 'none';
+      }
+
+      // 設定載入狀態
+      function setLoading(isLoading) {
+        const buttonText = loginButton.querySelector('.button-text');
+        const loadingSpinner = loginButton.querySelector('.loading-spinner');
+        
+        if (isLoading) {
+          buttonText.style.display = 'none';
+          loadingSpinner.style.display = 'inline-block';
+          loginButton.disabled = true;
+          loginButton.classList.add('loading');
+        } else {
+          buttonText.style.display = 'inline-block';
+          loadingSpinner.style.display = 'none';
+          loginButton.disabled = false;
+          loginButton.classList.remove('loading');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

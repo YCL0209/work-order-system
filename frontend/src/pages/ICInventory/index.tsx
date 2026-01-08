@@ -1,16 +1,42 @@
 import { useState, useMemo } from 'react';
-import { Badge, Button, Card } from '@/components/common';
+import { Badge, Button, Card, Drawer } from '@/components/common';
 import { mockICInventory } from '@/mocks';
 import type { ICInventory, ICInventoryStatus } from '@/types';
 import { IC_INVENTORY_STATUS_LABELS, IC_INVENTORY_STATUS_COLORS } from '@/types';
 
+type FormData = {
+  partNumber: string;
+  quantity: number;
+  customerName: string;
+  depositDate: string;
+  batchNo: string;
+  location: string;
+  status: ICInventoryStatus;
+  remark: string;
+};
+
+const emptyForm: FormData = {
+  partNumber: '',
+  quantity: 0,
+  customerName: '',
+  depositDate: new Date().toISOString().split('T')[0],
+  batchNo: '',
+  location: '',
+  status: 'pending',
+  remark: '',
+};
+
 export default function ICInventoryPage() {
+  const [inventory, setInventory] = useState<ICInventory[]>(mockICInventory);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<ICInventoryStatus | 'all'>('all');
+  const [isAdding, setIsAdding] = useState(false);
+  const [editingItem, setEditingItem] = useState<ICInventory | null>(null);
+  const [formData, setFormData] = useState<FormData>(emptyForm);
 
   // 篩選資料
   const filteredData = useMemo(() => {
-    return mockICInventory.filter((item) => {
+    return inventory.filter((item) => {
       const matchSearch =
         item.partNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -18,53 +44,185 @@ export default function ICInventoryPage() {
       const matchStatus = statusFilter === 'all' || item.status === statusFilter;
       return matchSearch && matchStatus;
     });
-  }, [searchTerm, statusFilter]);
-
-  // 統計資料
-  const stats = useMemo(() => {
-    const total = mockICInventory.length;
-    const totalQty = mockICInventory.reduce((sum, item) => sum + item.quantity, 0);
-    const pending = mockICInventory.filter((item) => item.status === 'pending').length;
-    const processing = mockICInventory.filter((item) => item.status === 'processing').length;
-    return { total, totalQty, pending, processing };
-  }, []);
+  }, [inventory, searchTerm, statusFilter]);
 
   const getStatusBadge = (status: ICInventoryStatus) => {
     const variant = IC_INVENTORY_STATUS_COLORS[status] as 'warning' | 'active' | 'success' | 'completed';
     return <Badge variant={variant}>{IC_INVENTORY_STATUS_LABELS[status]}</Badge>;
   };
 
+  // 開啟新增
+  const handleOpenAdd = () => {
+    setFormData(emptyForm);
+    setIsAdding(true);
+  };
+
+  // 開啟編輯
+  const handleOpenEdit = (item: ICInventory) => {
+    setFormData({
+      partNumber: item.partNumber,
+      quantity: item.quantity,
+      customerName: item.customerName,
+      depositDate: item.depositDate,
+      batchNo: item.batchNo,
+      location: item.location,
+      status: item.status,
+      remark: item.remark || '',
+    });
+    setEditingItem(item);
+  };
+
+  // 關閉 Drawer
+  const handleClose = () => {
+    setIsAdding(false);
+    setEditingItem(null);
+    setFormData(emptyForm);
+  };
+
+  // 新增庫存
+  const handleAdd = () => {
+    if (!formData.partNumber || !formData.customerName || formData.quantity <= 0) {
+      alert('請填寫必填欄位');
+      return;
+    }
+    const newItem: ICInventory = {
+      id: `IC-${Date.now()}`,
+      ...formData,
+      remark: formData.remark || undefined,
+    };
+    setInventory(prev => [...prev, newItem]);
+    handleClose();
+  };
+
+  // 儲存編輯
+  const handleSave = () => {
+    if (!editingItem) return;
+    if (!formData.partNumber || !formData.customerName || formData.quantity <= 0) {
+      alert('請填寫必填欄位');
+      return;
+    }
+    setInventory(prev =>
+      prev.map(item =>
+        item.id === editingItem.id
+          ? { ...item, ...formData, remark: formData.remark || undefined }
+          : item
+      )
+    );
+    handleClose();
+  };
+
+  // 渲染表單
+  const renderForm = () => (
+    <div className="space-y-4">
+      <div>
+        <label className="form-label">IC 料號 *</label>
+        <input
+          type="text"
+          className="form-input"
+          placeholder="例：ATmega328P"
+          value={formData.partNumber}
+          onChange={e => setFormData({ ...formData, partNumber: e.target.value })}
+        />
+      </div>
+      <div>
+        <label className="form-label">數量 *</label>
+        <input
+          type="number"
+          className="form-input"
+          placeholder="0"
+          value={formData.quantity}
+          onChange={e => setFormData({ ...formData, quantity: Number(e.target.value) })}
+        />
+      </div>
+      <div>
+        <label className="form-label">客戶名稱 *</label>
+        <input
+          type="text"
+          className="form-input"
+          placeholder="請輸入客戶名稱"
+          value={formData.customerName}
+          onChange={e => setFormData({ ...formData, customerName: e.target.value })}
+        />
+      </div>
+      <div>
+        <label className="form-label">寄放日期 *</label>
+        <input
+          type="date"
+          className="form-input"
+          value={formData.depositDate}
+          onChange={e => setFormData({ ...formData, depositDate: e.target.value })}
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="form-label">批號</label>
+          <input
+            type="text"
+            className="form-input"
+            placeholder="例：B2024-001"
+            value={formData.batchNo}
+            onChange={e => setFormData({ ...formData, batchNo: e.target.value })}
+          />
+        </div>
+        <div>
+          <label className="form-label">儲位</label>
+          <input
+            type="text"
+            className="form-input"
+            placeholder="例：A-01-02"
+            value={formData.location}
+            onChange={e => setFormData({ ...formData, location: e.target.value })}
+          />
+        </div>
+      </div>
+      <div>
+        <label className="form-label">狀態</label>
+        <select
+          className="form-input"
+          value={formData.status}
+          onChange={e => setFormData({ ...formData, status: e.target.value as ICInventoryStatus })}
+        >
+          <option value="pending">待加工</option>
+          <option value="processing">加工中</option>
+          <option value="completed">已完成</option>
+          <option value="shipped">已出貨</option>
+        </select>
+      </div>
+      <div>
+        <label className="form-label">備註</label>
+        <textarea
+          className="form-input"
+          rows={3}
+          placeholder="其他備註資訊"
+          value={formData.remark}
+          onChange={e => setFormData({ ...formData, remark: e.target.value })}
+        />
+      </div>
+      <div className="flex gap-3 !mt-6 pt-6 border-t border-gray-200">
+        <Button
+          variant="primary"
+          className="flex-[2]"
+          onClick={editingItem ? handleSave : handleAdd}
+        >
+          {editingItem ? '儲存變更' : '新增庫存'}
+        </Button>
+        <Button variant="secondary" className="flex-1" onClick={handleClose}>
+          取消
+        </Button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-6">
       {/* 頁面標題 */}
-      <div className="flex items-center justify-between">
+      <div className="page-header">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">IC 庫存管理</h1>
-          <p className="text-gray-500 mt-1">管理廠內 IC 寄放與庫存狀態</p>
         </div>
-        <Button variant="primary">
+        <Button variant="primary" onClick={handleOpenAdd}>
           + 新增庫存
         </Button>
-      </div>
-
-      {/* 統計卡片 */}
-      <div className="grid grid-cols-4 gap-4">
-        <Card className="text-center">
-          <div className="text-sm text-gray-500">總筆數</div>
-          <div className="text-2xl font-bold text-gray-800 mt-1">{stats.total}</div>
-        </Card>
-        <Card className="text-center">
-          <div className="text-sm text-gray-500">總數量</div>
-          <div className="text-2xl font-bold text-primary mt-1">{stats.totalQty.toLocaleString()}</div>
-        </Card>
-        <Card className="text-center">
-          <div className="text-sm text-gray-500">待加工</div>
-          <div className="text-2xl font-bold text-yellow-600 mt-1">{stats.pending}</div>
-        </Card>
-        <Card className="text-center">
-          <div className="text-sm text-gray-500">加工中</div>
-          <div className="text-2xl font-bold text-blue-600 mt-1">{stats.processing}</div>
-        </Card>
       </div>
 
       {/* 搜尋和篩選 */}
@@ -132,7 +290,7 @@ export default function ICInventoryPage() {
                   <td>{getStatusBadge(item.status)}</td>
                   <td className="text-gray-500 text-sm">{item.remark || '-'}</td>
                   <td>
-                    <Button variant="outline-primary" size="mini">
+                    <Button variant="outline-primary" size="mini" onClick={() => handleOpenEdit(item)}>
                       編輯
                     </Button>
                   </td>
@@ -142,6 +300,26 @@ export default function ICInventoryPage() {
           </tbody>
         </table>
       </Card>
+
+      {/* 新增庫存 Drawer */}
+      <Drawer
+        isOpen={isAdding}
+        onClose={handleClose}
+        title="新增庫存"
+        width="md"
+      >
+        {renderForm()}
+      </Drawer>
+
+      {/* 編輯庫存 Drawer */}
+      <Drawer
+        isOpen={!!editingItem}
+        onClose={handleClose}
+        title={editingItem ? `編輯 - ${editingItem.partNumber}` : '編輯庫存'}
+        width="md"
+      >
+        {renderForm()}
+      </Drawer>
     </div>
   );
 }

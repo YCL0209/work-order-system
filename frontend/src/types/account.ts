@@ -33,7 +33,7 @@ export interface PageDefinition {
 
 // 所有頁面定義
 export const PAGE_DEFINITIONS: PageDefinition[] = [
-  { key: 'dashboard', name: '儀表板', description: '營運數據總覽', adminOnly: true },
+  { key: 'dashboard', name: '系統總覽', description: '營運數據總覽', adminOnly: true },
   { key: 'order-flow', name: '流程進度', description: '訂單流程操作' },
   { key: 'orders', name: '訂單管理', description: '訂單列表與維護' },
   { key: 'customers', name: '客戶管理', description: '客戶資料維護' },

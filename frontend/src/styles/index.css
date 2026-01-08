@@ -20,18 +20,22 @@
  * 主色淺          bg-primary-light                    #e8f0fa
  * 青綠 Teal       bg-teal / text-teal                 #14b5af
  * 青綠深          bg-teal-dark                        #0e9b95
+ * 薄荷綠 Mint     bg-mint / text-mint                 #b8e6c4
+ * 淺青綠 Seafoam  bg-seafoam / text-seafoam           #7dd3c0
  *
  * 【功能色彩】
  * ---------------------------------------------------------------------
- * 成功 Success    bg-success / text-success           #28a745
+ * 成功 Success    bg-success / text-success           #16a34a
  * 警告 Warning    bg-warning / text-warning           #ffc107
- * 危險 Danger     bg-danger / text-danger             #dc3545
- * 資訊 Info       bg-info / text-info                 #17a2b8
+ * 危險 Danger     bg-danger / text-danger             #dc2626
+ * 功能藍 Info     bg-info / text-info                 #2563eb
  * 次要 Secondary  bg-secondary / text-secondary       #6c757d
  *
  * 【版面配置】
  * ---------------------------------------------------------------------
  * 側邊欄寬度      w-sidebar / ml-sidebar              250px
+ * 主內容區間距    main-content                        24px 32px 24px 8px
+ * 頁面標題間距    page-header                         左16px
  * 頁面內距        p-6                                 24px
  * 側邊欄內距      p-5                                 20px
  * 網格間距        gap-4                               16px
@@ -79,12 +83,16 @@
   --color-teal: #14b5af;
   --color-teal-dark: #0e9b95;
   --color-teal-light: #e6f7f6;
+  --color-mint: #b8e6c4;
+  --color-mint-dark: #8fd4a0;
+  --color-seafoam: #7dd3c0;
+  --color-seafoam-dark: #5ec4ad;
 
   /* 功能色 */
-  --color-success: #28a745;
+  --color-success: #16a34a;
   --color-warning: #ffc107;
-  --color-danger: #dc3545;
-  --color-info: #17a2b8;
+  --color-danger: #dc2626;
+  --color-info: #2563eb;
   --color-secondary: #6c757d;
 
   /* 文字色 */
@@ -137,16 +145,20 @@
   --color-teal: #14b5af;
   --color-teal-dark: #0e9b95;
   --color-teal-light: #e6f7f6;
-  --color-success: #28a745;
+  --color-mint: #b8e6c4;
+  --color-mint-dark: #8fd4a0;
+  --color-seafoam: #7dd3c0;
+  --color-seafoam-dark: #5ec4ad;
+  --color-success: #16a34a;
   --color-success-light: #d1fae5;
   --color-success-dark: #065f46;
   --color-warning: #ffc107;
   --color-warning-light: #fef3c7;
   --color-warning-dark: #d97706;
-  --color-danger: #dc3545;
+  --color-danger: #dc2626;
   --color-danger-light: #fee2e2;
   --color-danger-dark: #c53030;
-  --color-info: #17a2b8;
+  --color-info: #2563eb;
   --color-info-light: #e0f2fe;
   --color-info-dark: #0369a1;
   --color-secondary: #6c757d;
@@ -184,6 +196,18 @@
 
 .ml-sidebar {
   margin-left: var(--sidebar-width);
+}
+
+.main-content {
+  padding: 24px 32px 24px 8px;
+}
+
+.page-header {
+  padding-left: 16px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* 基礎樣式 */
@@ -234,13 +258,13 @@ body {
 }
 
 .btn-primary {
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, #4073c2 0%, #2c5282 100%);
   color: white;
   border: 1px solid var(--color-primary-border);
 }
 
 .btn-primary:hover {
-  background-color: var(--color-primary-dark);
+  background: linear-gradient(135deg, #2c5282 0%, #1e3a5f 100%);
 }
 
 .btn-success {
@@ -325,7 +349,7 @@ body {
   background-color: white;
   border-radius: var(--radius-card);
   padding: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
@@ -441,7 +465,7 @@ body {
 /* 表單輸入 */
 .form-input {
   width: 100%;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-btn);
   font-size: var(--font-size-base);
@@ -463,7 +487,7 @@ body {
 
 .form-label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   font-weight: 600;
   color: #495057;
   font-size: var(--font-size-base);
@@ -484,6 +508,15 @@ body {
   color: #4a5568;
   font-weight: 600;
   text-align: left;
+}
+
+.data-table th.text-right {
+  text-align: right;
+}
+
+.data-table th.text-center,
+.data-table td.text-center {
+  text-align: center;
 }
 
 .data-table td {

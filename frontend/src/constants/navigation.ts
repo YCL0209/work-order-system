@@ -6,7 +6,7 @@ export interface NavItem {
 }
 
 export const SIDEBAR_NAVIGATION: NavItem[] = [
-  { path: '/dashboard', label: '儀表板' },
+  { path: '/dashboard', label: '系統總覽' },
   { path: '/orders', label: '訂單管理' },
   { path: '/customers', label: '客戶管理' },
   { path: '/ic-inventory', label: 'IC 庫存管理' },
@@ -21,4 +21,5 @@ export const SIDEBAR_NAVIGATION: NavItem[] = [
   },
   { path: '/finance', label: '金流管理' },
   { path: '/accounts', label: '帳號管理' },
+  { path: '/login-preview', label: '登入頁面' },
 ];

@@ -8,6 +8,7 @@ import Consumables from '@/pages/Consumables';
 import Finance from '@/pages/Finance';
 import AccountManagement from '@/pages/AccountManagement';
 import ICInventory from '@/pages/ICInventory';
+import LoginPreview from '@/pages/LoginPreview';
 
 export const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ export const router = createBrowserRouter([
       {
         path: 'ic-inventory',
         element: <ICInventory />,
+      },
+      {
+        path: 'login-preview',
+        element: <LoginPreview />,
       },
     ],
   },

@@ -48,10 +48,9 @@ export default function Orders() {
   return (
     <div className="space-y-6">
       {/* 頁面標題 */}
-      <div className="flex items-center justify-between">
+      <div className="page-header">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">訂單管理</h1>
-          <p className="text-gray-500 mt-1">管理所有訂單與流程進度</p>
         </div>
         <button
           onClick={() => navigate('/order-flow')}

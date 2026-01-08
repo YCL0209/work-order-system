@@ -101,15 +101,15 @@ export function Sidebar() {
   return (
     <aside className="w-sidebar h-screen fixed left-0 top-0 bg-bg-sidebar border-r border-gray-200 flex flex-col">
       {/* Logo 區域 */}
-      <div className="p-5 border-b border-gray-200">
+      <div className="p-6 border-b border-gray-200">
         <div className="flex items-center gap-4">
           <img
             src="/assets/images/logo/suiyao-logo.png"
             alt="穗鈅科技"
-            className="w-12 h-12 object-contain"
+            className="w-20 h-20 object-contain"
           />
           <div>
-            <h1 className="text-primary-dark font-bold text-lg">穗鈅科技</h1>
+            <h1 className="text-primary-dark font-bold text-xl">穗鈅科技</h1>
             <p className="text-sm text-gray-500">IC 燒錄 MES 系統</p>
           </div>
         </div>

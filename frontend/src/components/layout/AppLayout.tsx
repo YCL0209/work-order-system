@@ -9,7 +9,7 @@ export function AppLayout() {
 
       {/* 主內容區 */}
       <main className="ml-sidebar min-h-screen">
-        <div className="p-6">
+        <div className="main-content">
           <Outlet />
         </div>
       </main>

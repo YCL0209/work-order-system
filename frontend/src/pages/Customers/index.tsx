@@ -6,9 +6,8 @@ export default function Customers() {
   return (
     <div className="space-y-6">
       {/* 頁面標題 */}
-      <div>
+      <div className="page-header">
         <h1 className="text-2xl font-bold text-gray-800">客戶管理</h1>
-        <p className="text-gray-500 mt-1">管理客戶資料與付款條件</p>
       </div>
 
       <Card>
